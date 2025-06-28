@@ -20,3 +20,10 @@ Admin Dashboard:
     pages/admin/create.tsx
     pages/admin/edit/[slug].tsx
 
+Folder Structure:
+
+    NextJS-Blog-Crud
+        |- lib/
+            |- db.ts
+        |- public/
+        |- src/
