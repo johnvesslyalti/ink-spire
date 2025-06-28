@@ -2,9 +2,8 @@ import { Schema, Document, models, model } from 'mongoose';
 
 export interface IPost extends Document {
     title: string;
-    slug: string;
     content: string;
-    author: string;
+    slug: string;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -15,19 +14,15 @@ const PostSchema: Schema = new Schema<IPost>(
             type: String,
             required: true,
         },
-        slug: {
-            type: String,
-            required: true,
-            unique: true,
-        },
         content: {
             type: String,
             required: true,
         },
-        author: {
+        slug: {
             type: String,
             required: true,
-        },
+            unique: true,
+        }
     },
     {
         timestamps: true,
