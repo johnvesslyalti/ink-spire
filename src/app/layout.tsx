@@ -1,4 +1,5 @@
-import { ThemeProvider } from "@/components/ThemeProvider";
+import Navbar from "@/components/Navbar";
+import './globals.css'
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -10,14 +11,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <html lang="en" suppressHydrationWarning>
         <head />
         <body>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {children}
-          </ThemeProvider>
+            <header>
+                <Navbar />
+            </header>
+            <main>
+                {children}
+            </main>
         </body>
       </html>
     </>
