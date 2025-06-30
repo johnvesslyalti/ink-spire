@@ -11,7 +11,7 @@ const links = [
   { href: '/', label: 'Home' },
   { href: '/posts', label: 'Posts' },
   { href: '/create', label: 'Create' },
-  { href: '/login', label: 'Login' },
+  { href: '/signin', label: 'Sign In' },
   { href: '/signup', label: 'Sign Up' },
 ]
 
