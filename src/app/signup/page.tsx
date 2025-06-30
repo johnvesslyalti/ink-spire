@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { useState } from 'react'
 import Link from 'next/link'
+import axios from 'axios'
 
 const formSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -27,7 +28,7 @@ export default function SignUpPage() {
   const onSubmit = async (data: FormData) => {
     setLoading(true)
     try {
-      console.log(data)
+      await axios.post('/api/auth/signup', data)
     } catch (error) {
       console.error('Signup failed', error)
     } finally {
