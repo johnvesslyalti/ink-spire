@@ -25,16 +25,7 @@ const dummyPosts = [
 
 export default function HomePage() {
   return (
-    <section className="container mx-auto px-4 py-12">
-      <div className="text-center mb-10">
-        <h1 className="text-4xl font-bold mb-2">Welcome to <span className="text-blue-600">BlogCraft</span></h1>
-        <p className="text-muted-foreground text-lg max-w-xl mx-auto">
-          Explore thoughts, share ideas, and read what others are writing. Your next great story starts here.
-        </p>
-        <Link href="/create">
-          <Button className="mt-6">Create Your First Post</Button>
-        </Link>
-      </div>
+    <section className="container mx-auto px-4 py-12 min-h-screen">
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {dummyPosts.map(post => (

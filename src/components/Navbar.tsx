@@ -6,20 +6,37 @@ import { Menu } from 'lucide-react'
 import { useState } from 'react'
 import { Sheet, SheetContent, SheetTrigger } from '@/styles/components/ui/sheet'
 import { Button } from '@/styles/components/ui/button'
-
-const links = [
-  { href: '/', label: 'Home' },
-  { href: '/posts', label: 'Posts' },
-  { href: '/create', label: 'Create' },
-  { href: '/signin', label: 'Sign In' },
-  { href: '/signup', label: 'Sign Up' },
-]
+import { useBlogStore } from 'store/useBlogStore'
 
 export default function Navbar() {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
+  const user = useBlogStore((state) => state.user)
+  const logout = useBlogStore((state) => state.logout)
 
   const isActive = (href: string) => pathname === href
+
+  const authLinks = [
+    { href: '/signin', label: 'Sign In' },
+    { href: '/signup', label: 'Sign Up' },
+  ]
+
+  const userLinks = [
+    { href: '/', label: 'Home' },
+    { href: '/posts', label: 'Posts' },
+    { href: '/create', label: 'Create' },
+  ]
+
+  const adminLinks = [
+    { href: '/admin/dashboard', label: 'Dashboard' },
+    { href: '/admin/users', label: 'Manage Users' },
+  ]
+
+  const linksToShow = user
+    ? user.role === 'admin'
+      ? [...userLinks, ...adminLinks]
+      : userLinks
+    : authLinks
 
   return (
     <nav className="w-full border-b bg-white shadow-sm sticky top-0 z-50">
@@ -30,7 +47,7 @@ export default function Navbar() {
 
         {/* Desktop Nav */}
         <div className="hidden md:flex gap-6 items-center">
-          {links.map(link => (
+          {linksToShow.map((link) => (
             <Link
               key={link.href}
               href={link.href}
@@ -41,6 +58,14 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
+          {user && (
+            <button
+              onClick={logout}
+              className="text-sm font-medium text-red-600 hover:underline"
+            >
+              Logout
+            </button>
+          )}
         </div>
 
         {/* Mobile Nav */}
@@ -53,7 +78,7 @@ export default function Navbar() {
             </SheetTrigger>
             <SheetContent side="right" className="w-[250px]">
               <div className="flex flex-col gap-4 mt-4">
-                {links.map(link => (
+                {linksToShow.map((link) => (
                   <Link
                     key={link.href}
                     href={link.href}
@@ -65,6 +90,17 @@ export default function Navbar() {
                     {link.label}
                   </Link>
                 ))}
+                {user && (
+                  <button
+                    onClick={() => {
+                      logout()
+                      setOpen(false)
+                    }}
+                    className="text-base font-medium text-red-600 hover:underline"
+                  >
+                    Logout
+                  </button>
+                )}
               </div>
             </SheetContent>
           </Sheet>
