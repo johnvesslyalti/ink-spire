@@ -5,6 +5,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { useState } from 'react'
 import Link from 'next/link'
+import { useBlogStore } from 'store/useBlogStore'
+import axios from 'axios'
+import { useRouter } from 'next/navigation'
 
 const formSchema = z.object({
     email: z.string().email('Invalid email address'),
@@ -15,6 +18,11 @@ type FormData = z.infer<typeof formSchema>
 
 export default function SignInPage() {
     const [loading, setLoading] = useState(false)
+    const router = useRouter();
+
+    const setUser = useBlogStore((state) => state.setUser)
+    const setError = useBlogStore((state) => state.setError)
+
     const {
         register,
         handleSubmit,
@@ -26,8 +34,17 @@ export default function SignInPage() {
     const onSubmit = async (data: FormData) => {
         setLoading(true)
         try {
-            console.log('Login data:', data)
-            // Add your login logic here (API call)
+            const res = await axios.post('/api/auth/signin', data)
+
+            const { token, user } = res.data;
+
+            if(token && user) {
+                localStorage.setItem('token', token)
+                setUser(user)
+                router.push("/")
+            } else {
+                setError('Invalid response from server')
+            }
         } catch (error) {
             console.error('Login failed', error)
         } finally {
