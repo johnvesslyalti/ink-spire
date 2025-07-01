@@ -1,55 +1,23 @@
-'use client'
-
-import Navbar from "@/components/Navbar";
 import './globals.css'
-import Footer from "@/components/Footer";
-import { useBlogStore } from "store/useBlogStore";
-import { useEffect } from "react";
+import Navbar from '@/components/Navbar'
+import Footer from '@/components/Footer'
+import SessionProvider from '@/components/SessionProvider'
 
-interface RootLayoutProps {
-  children: React.ReactNode;
+export const metadata = {
+  title: 'Your App',
+  description: 'Description',
 }
 
-export default function RootLayout({ children }: RootLayoutProps) {
-    const setUser = useBlogStore((state) => state.setUser)
-
-  useEffect(() => {
-    const token = localStorage.getItem('token')
-    if (!token) return
-
-    const fetchUser = async () => {
-      try {
-        const res = await fetch('/api/auth/me', {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        const result = await res.json()
-        if (res.ok) {
-          setUser(result.user)
-        }
-      } catch (err) {
-        console.error('Failed to restore session', err)
-      }
-    }
-
-    fetchUser()
-  }, [setUser])
-  
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <>
-      <html lang="en" suppressHydrationWarning>
-        <head />
-        <body>
-            <header>
-                <Navbar />
-            </header>
-            <main>
-                {children}
-            </main>
-            <footer>
-                <Footer />
-            </footer>
-        </body>
-      </html>
-    </>
+    <html lang="en" suppressHydrationWarning>
+      <body>
+        <SessionProvider>
+          <header><Navbar /></header>
+          <main>{children}</main>
+          <footer><Footer /></footer>
+        </SessionProvider>
+      </body>
+    </html>
   )
 }
