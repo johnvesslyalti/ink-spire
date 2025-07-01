@@ -29,7 +29,7 @@ export default function CreatePostForm() {
 
         setLoading(true)
         try {
-            const res = await fetch('/api/posts', {
+            const res = await fetch('/api/posts/create', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData),
