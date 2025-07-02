@@ -23,7 +23,6 @@ export default function Navbar() {
 
     const userLinks = [
         { href: '/', label: 'Home' },
-        { href: '/posts', label: 'Posts' },
         { href: '/create', label: 'Create' },
     ]
 
