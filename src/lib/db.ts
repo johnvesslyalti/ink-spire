@@ -1,5 +1,9 @@
 import mongoose, { Mongoose } from 'mongoose';
-import { MongooseConnection } from '../types';
+
+export interface MongooseConnection {
+    conn: Mongoose | null;
+    promise: Promise<Mongoose> | null;
+}
 
 const MONGODB_URI = process.env.MONGODB_URI || '';
 

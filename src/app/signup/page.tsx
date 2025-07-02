@@ -6,6 +6,7 @@ import * as z from 'zod'
 import { useState } from 'react'
 import Link from 'next/link'
 import axios from 'axios'
+import { useRouter } from 'next/navigation'
 
 const formSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -17,6 +18,7 @@ type FormData = z.infer<typeof formSchema>
 
 export default function SignUpPage() {
   const [loading, setLoading] = useState(false)
+  const router = useRouter()
   const {
     register,
     handleSubmit,
@@ -29,6 +31,7 @@ export default function SignUpPage() {
     setLoading(true)
     try {
       await axios.post('/api/auth/signup', data)
+      router.push('/signin')
     } catch (error) {
       console.error('Signup failed', error)
     } finally {
