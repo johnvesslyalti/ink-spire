@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
-import { useBlogStore } from 'store/useBlogStore'
+import { useBlogStore } from 'store/useAuth'
 
 export default function SessionProvider({ children }: { children: React.ReactNode }) {
   const setUser = useBlogStore((state) => state.setUser)

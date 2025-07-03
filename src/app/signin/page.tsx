@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { useState } from 'react'
 import Link from 'next/link'
-import { useBlogStore } from 'store/useBlogStore'
+import { useBlogStore } from 'store/useAuth'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
 

@@ -6,7 +6,7 @@ import { Menu } from 'lucide-react'
 import { useState } from 'react'
 import { Sheet, SheetContent, SheetTrigger } from '@/styles/components/ui/sheet'
 import { Button } from '@/styles/components/ui/button'
-import { useBlogStore } from 'store/useBlogStore'
+import { useBlogStore } from 'store/useAuth'
 
 export default function Navbar() {
     const pathname = usePathname()
