@@ -1,73 +1,53 @@
-import { Badge } from "@/styles/components/ui/badge";
-import { Card, CardContent } from "@/styles/components/ui/card";
-import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/styles/components/ui/table";
-import { Table, UserIcon } from "lucide-react";
+'use client'
+
+import { useEffect, useState } from 'react'
 
 type User = {
-    id: string;
-    name: string;
-    email: string;
-    role: "admin" | "user";
-    createdAt: string;
-};
-
-async function getUsers(): Promise<User[]> {
-    return [
-        {
-            id: "1",
-            name: "Alice Johnson",
-            email: "alice@example.com",
-            role: "admin",
-            createdAt: "2024-01-15",
-        },
-        {
-            id: "2",
-            name: "Bob Smith",
-            email: "bob@example.com",
-            role: "user",
-            createdAt: "2024-02-10",
-        },
-    ];
+    _id: string
+    name: string
+    email: string
 }
 
-export default async function UsersPage() {
-    const users = await getUsers();
+export default function UsersPage() {
+    const [users, setUsers] = useState<User[]>([])
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState<string | null>(null)
+
+    useEffect(() => {
+        const fetchUsers = async () => {
+            try {
+                const res = await fetch('/api/users')
+                if (!res.ok) throw new Error('Failed to fetch users')
+                const data = await res.json()
+                setUsers(data)
+            } catch (err: unknown) {
+                if (err instanceof Error) {
+                    setError(err.message)
+                } else {
+                    setError('An unexpected error occurred')
+                }
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        fetchUsers()
+    }, [])
+
+    if (loading) return <div className="text-center mt-10">Loading...</div>
+    if (error) return <div className="text-center mt-10 text-red-500">{error}</div>
 
     return (
-        <div className="p-6 space-y-6">
-            <h1 className="text-2xl font-bold flex items-center gap-2">
-                <UserIcon className="w-6 h-6" />
-                Users
-            </h1>
-
-            <Card>
-                <CardContent className="p-4">
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead>Name</TableHead>
-                                <TableHead>Email</TableHead>
-                                <TableHead>Role</TableHead>
-                                <TableHead>Joined</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {users.map((user) => (
-                                <TableRow key={user.id}>
-                                    <TableCell>{user.name}</TableCell>
-                                    <TableCell>{user.email}</TableCell>
-                                    <TableCell>
-                                        <Badge variant={user.role === "admin" ? "destructive" : "secondary"}>
-                                            {user.role}
-                                        </Badge>
-                                    </TableCell>
-                                    <TableCell>{new Date(user.createdAt).toLocaleDateString()}</TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </CardContent>
-            </Card>
+        <div className="max-w-3xl mx-auto mt-10 p-4">
+            <h1 className="text-2xl font-bold mb-6 text-center">User List</h1>
+            <ul className="space-y-4">
+                {users.map((user) => (
+                    <li key={user._id} className="p-4 border rounded shadow bg-white">
+                        <p className="font-semibold">{user.name}</p>
+                        <p className="text-sm text-gray-600">{user.email}</p>
+                    </li>
+                ))}
+            </ul>
         </div>
-    );
+    )
 }

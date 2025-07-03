@@ -27,7 +27,6 @@ export default function Navbar() {
     ]
 
     const adminLinks = [
-        { href: '/admin/dashboard', label: 'Dashboard' },
         { href: '/admin/users', label: 'Manage Users' },
     ]
 
