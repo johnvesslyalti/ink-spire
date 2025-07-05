@@ -21,20 +21,16 @@ export default function Navbar() {
         { href: '/signup', label: 'Sign Up' },
     ]
 
-    const userLinks = [
-        { href: '/', label: 'Home' },
-        { href: '/create', label: 'Create' },
-    ]
-
     const adminLinks = [
         { href: '/admin/users', label: 'Manage Users' },
     ]
 
-    const linksToShow = user
-        ? user.role === 'admin'
-            ? [...userLinks, ...adminLinks]
-            : userLinks
-        : authLinks
+    const linksToShow = 
+        user && user.role === 'admin'
+        ? adminLinks
+        : !user
+        ? authLinks
+        : []
 
     return (
         <nav className="w-full border-b bg-white shadow-sm sticky top-0 z-50">
